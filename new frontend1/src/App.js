@@ -32,13 +32,6 @@ function App() {
       <section id="footer">
         <Footer />
       </section>
-
-        <HeroPage />
-        <Paste />
-        <Output />
-        <How />
-      </div>
-      <Footer />
     </div>
   );
 }
