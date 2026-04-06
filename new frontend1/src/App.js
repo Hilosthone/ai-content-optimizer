@@ -32,14 +32,13 @@ function App() {
       <section id="footer">
         <Footer />
       </section>
-=======
+
         <HeroPage />
         <Paste />
         <Output />
         <How />
       </div>
       <Footer />
->>>>>>> 31d2cf07e73648f515fcbeb3daad6dbf3323dede
     </div>
   );
 }
