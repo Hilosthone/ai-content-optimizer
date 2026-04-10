@@ -39,16 +39,25 @@ Paste your content and get instant SEO optimization, engagement tips, readabilit
 ## Project Structure
 
 ```
-ai-content-optimizer/
-├── backend/
-│   ├── main.py              # API routes
-│   ├── optimizer.py         # Calls GPT-4o to optimize content
-│   ├── prompt_builder.py    # Builds platform-specific optimization prompt
-│   └── config.py            # Environment config
-├── frontend/                # Next.js app
-├── render.yaml              # Render deployment config
-├── requirements.txt
-└── README.md
+frontend/
+├── src/
+│   ├── app/
+│   │   ├── layout.js       # Global provider, Navbar & Footer
+│   │   ├── page.js         # Hero section & scroll anchor
+│   │   └── globals.css     # The App.css we created
+│   ├── components/
+│   │   ├── Navbar.jsx
+│   │   ├── Footer.jsx
+│   │   └── Paste.jsx       # The main logic component
+│   ├── services/
+│   │   └── api.js          # API call logic
+│   └── styles/
+│       ├── Navbar.css
+│       ├── Footer.css
+│       └── Paste.css
+├── public/
+│   └── Images/             # Store your .png assets here
+└── package.json
 ```
 
 ---
