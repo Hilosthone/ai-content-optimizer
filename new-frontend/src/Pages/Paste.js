@@ -1,156 +1,206 @@
-<<<<<<< HEAD
-import { useState, useEffect } from "react";
+// function Paste() {
+//   return (
+//     <div className="paste">
+//       <h1>Paste your Content</h1>
+//       <textarea placeholder="Paste your caption, tweet, blog or blog content here"></textarea>
+//       <p className="q">Select Tone</p>
+//       <div className="dropdown-container">
+//         <select>
+//           <option>Professional</option>
+//           <option>Friendly</option>
+//           <option>Formal</option>
+//           <option>Assertive</option>
+//         </select>
+
+//         <select>
+//           <option>Platform</option>
+//           <option>Short</option>
+//           <option>Meduim</option>
+//           <option>Detailed</option>
+//         </select>
+
+//         <select>
+//           <option>Audience</option>
+//           <option>Accept</option>
+//           <option>Decline</option>
+//           <option>Request clarification</option>
+//           <option>Follow Up</option>
+//         </select>
+//       </div>
+//       <div>
+//         <button className="b3">Optimize & Schedule</button>
+//       </div>
+//     </div>
+//   );
+// }
+// export default Paste;
+
+'use client'
+import React, { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  Sparkles,
+  Loader2,
+  ChevronDown,
+  CheckCircle,
+  Calendar,
+  BarChart3,
+  Zap,
+} from 'lucide-react'
+import './Paste.css'
 
 function Paste() {
-  const [content, setContent] = useState("");
-  const [platforms, setPlatforms] = useState([]);
-  const [platform, setPlatform] = useState("twitter");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false)
+  const [content, setContent] = useState('')
+  const [selectedPlatform, setSelectedPlatform] = useState('linkedin')
+  const [platforms, setPlatforms] = useState([])
+  const [result, setResult] = useState(null)
 
-  const BACKEND_URL = "https://ai-content-optimizer.onrender.com"; // updated link
-
-  // Fetch available platforms from backend
   useEffect(() => {
-    fetch(`${BACKEND_URL}/platforms`)
+    fetch('https://ai-content-optimizer.onrender.com/platforms')
       .then((res) => res.json())
-      .then((data) => {
-        setPlatforms(data.platforms || []);
-        if (data.platforms?.length) setPlatform(data.platforms[0]);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+      .then((data) => setPlatforms(data.platforms))
+      .catch((err) => console.error('Platform fetch failed:', err))
+  }, [])
 
   const handleOptimize = async () => {
-    if (!content.trim()) {
-      alert("Please paste some content first.");
-      return;
-    }
-
-    setLoading(true);
-    setError("");
-    setResult(null);
-
+    if (!content) return
+    setLoading(true)
+    setResult(null)
     try {
-      const response = await fetch(`${BACKEND_URL}/optimize`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content, platform }),
-      });
-
-      if (!response.ok) throw new Error("Failed to optimize content");
-
-      const data = await response.json();
-      setResult(data);
-    } catch (err) {
-      console.error(err);
-      setError("Something went wrong. Try again.");
+      const response = await fetch(
+        'https://ai-content-optimizer.onrender.com/optimize',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content, platform: selectedPlatform }),
+        },
+      )
+      const data = await response.json()
+      setResult(data)
+    } catch (error) {
+      console.error('Optimization error:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="paste">
-      <h1>Paste your Content</h1>
-      <textarea
-        placeholder="Paste your caption, tweet, blog content here"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      ></textarea>
-
-      <p className="q">Select Platform</p>
-
-      <div className="platform-container">
-        {platforms.map((p) => (
-          <div
-            key={p}
-            className={`platform-card ${
-              platform === p ? "active-platform" : ""
-            }`}
-            onClick={() => setPlatform(p)}
-          >
-            {p.charAt(0).toUpperCase() + p.slice(1)}
-          </div>
-        ))}
-      </div>
-
-      <div>
-        <button className="b3" onClick={handleOptimize}>
-          {loading ? "Optimizing..." : "Optimize & Schedule"}
-        </button>
-      </div>
-
-      {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
-
-      {result && (
-        <div className="output" style={{ marginTop: "20px" }}>
-          <h2>SEO Optimized Content</h2>
-          <p>{result.seo.optimized_content}</p>
-          <strong>Keywords:</strong> {result.seo.keywords.join(", ")}
-          <p>
-            <strong>Meta Description:</strong> {result.seo.meta_description}
-          </p>
-          <h2>Engagement</h2>
-          <p>{result.engagement.hook}</p>
-          <ul>
-            {result.engagement.suggestions.map((s, i) => (
-              <li key={i}>{s}</li>
-            ))}
-          </ul>
-          <h2>Readability</h2>
-          <p>Score: {result.readability.score}</p>
-          <ul>
-            {result.readability.improvements.map((i, idx) => (
-              <li key={idx}>{i}</li>
-            ))}
-          </ul>
-          <h2>Posting Schedule</h2>
-          <p>Platform: {result.posting_schedule.platform}</p>
-          <p>Best Times: {result.posting_schedule.best_times.join(", ")}</p>
-          <p>Reasoning: {result.posting_schedule.reasoning}</p>
+    <section id='upload' className='paste-section'>
+      <motion.div
+        className='paste-card'
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div className='card-header'>
+          <Sparkles className='icon-purple' size={24} />
+          <h2>AI Content Optimizer</h2>
         </div>
-      )}
-    </div>
-  );
+
+        <textarea
+          placeholder='Paste your raw caption or article here...'
+          className='premium-textarea'
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+
+        <div className='options-grid'>
+          <div className='select-wrapper'>
+            <label>Target Platform</label>
+            <select
+              value={selectedPlatform}
+              onChange={(e) => setSelectedPlatform(e.target.value)}
+            >
+              {platforms.map((p) => (
+                <option key={p} value={p}>
+                  {p.toUpperCase()}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className='select-icon' size={16} />
+          </div>
+
+          <div className='select-wrapper'>
+            <label>Optimization Goal</label>
+            <select>
+              <option>Maximum Engagement</option>
+              <option>SEO Visibility</option>
+              <option>Professional Tone</option>
+            </select>
+            <ChevronDown className='select-icon' size={16} />
+          </div>
+
+          <div className='select-wrapper'>
+            <label>AI Model</label>
+            <select>
+              <option>Neural Pro (Default)</option>
+              <option>GPT-4 Turbo</option>
+            </select>
+            <ChevronDown className='select-icon' size={16} />
+          </div>
+        </div>
+
+        <button
+          className={`btn-optimize ${loading ? 'loading' : ''}`}
+          onClick={handleOptimize}
+          disabled={loading || !content}
+        >
+          {loading ? (
+            <>
+              <Loader2 className='animate-spin' size={20} /> Processing...
+            </>
+          ) : (
+            <>
+              <Zap size={18} /> Optimize & Analyze
+            </>
+          )}
+        </button>
+
+        <AnimatePresence>
+          {result && (
+            <motion.div
+              className='api-response-container'
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+            >
+              <div className='response-section main-result'>
+                <div className='section-title'>
+                  <CheckCircle size={18} /> Optimized Version
+                </div>
+                <div className='optimized-box'>
+                  <p>{result.seo.optimized_content}</p>
+                </div>
+              </div>
+              <div className='analytics-grid'>
+                <div className='response-section'>
+                  <div className='section-title'>
+                    <BarChart3 size={18} /> SEO Keywords
+                  </div>
+                  <div className='tag-cloud'>
+                    {result.seo.keywords.map((k, i) => (
+                      <span key={i} className='keyword-tag'>
+                        {k}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className='response-section'>
+                  <div className='section-title'>
+                    <Calendar size={18} /> Posting Schedule
+                  </div>
+                  <ul className='time-list'>
+                    {result.posting_schedule.best_times.map((time, i) => (
+                      <li key={i}>• {time}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </section>
+  )
 }
 
-=======
-function Paste() {
-  return (
-    <div className="paste">
-      <h1>Paste your Content</h1>
-      <textarea placeholder="Paste your caption, tweet, blog or blog content here"></textarea>
-      <p className="q">Select Tone</p>
-      <div className="dropdown-container">
-        <select>
-          <option>Professional</option>
-          <option>Friendly</option>
-          <option>Formal</option>
-          <option>Assertive</option>
-        </select>
-
-        <select>
-          <option>Platform</option>
-          <option>Short</option>
-          <option>Meduim</option>
-          <option>Detailed</option>
-        </select>
-
-        <select>
-          <option>Audience</option>
-          <option>Accept</option>
-          <option>Decline</option>
-          <option>Request clarification</option>
-          <option>Follow Up</option>
-        </select>
-      </div>
-      <div>
-        <button className="b3">Optimize & Schedule</button>
-      </div>
-    </div>
-  );
-}
->>>>>>> 31d2cf07e73648f515fcbeb3daad6dbf3323dede
-export default Paste;
+export default Paste

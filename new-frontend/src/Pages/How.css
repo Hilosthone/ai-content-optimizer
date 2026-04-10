@@ -1,0 +1,147 @@
+.how-section {
+  padding: 120px 20px;
+  background-color: #000;
+  text-align: center;
+}
+
+/* --- Workflow Grid Layout --- */
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto 140px;
+}
+
+/* --- Fixed Workflow Cards --- */
+.how-card {
+  /* Using a solid dark base instead of pure transparency for better text contrast */
+  background: #0a0a0a; 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 48px 32px;
+  border-radius: 24px;
+  text-align: left;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+}
+
+.how-card:hover {
+  border-color: #8738DB;
+  background: #111111;
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.icon-box {
+  width: 56px;
+  height: 56px;
+  background: rgba(135, 56, 219, 0.15);
+  color: #a855f7; /* Brighter purple for icons */
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+/* --- CRITICAL TEXT VISIBILITY FIXES --- */
+.step-title {
+  color: #ffffff !important; /* Pure white for high contrast */
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.step-desc {
+  /* High-contrast silver/gray for readability without being blinding */
+  color: #e4e4e7 !important; 
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* --- Audience Section --- */
+.audience-container {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 100px;
+}
+
+.audience-header {
+  margin-bottom: 60px;
+}
+
+.audience-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.audience-subtitle {
+  color: #a1a1aa; /* Improved subtitle visibility */
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.audience-card {
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 32px;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.audience-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(135, 56, 219, 0.5);
+  background: #121212;
+}
+
+.segment-name {
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.segment-benefit {
+  color: #d4d4d8; /* Forced contrast for audience benefits */
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.segment-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #a855f7;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* --- Mobile Fixes --- */
+@media (max-width: 1024px) {
+  .how-grid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 640px) {
+  .how-section { padding: 80px 20px; }
+  .audience-title { font-size: 1.8rem; }
+}
